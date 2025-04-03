@@ -39,5 +39,16 @@
 }
 
 .nav-links a:hover {
-  color: gray;
+  color: #007bff; /* Hover color */
+}
+
+.nav-links .active {
+  color: #007bff; /* Active link color */
+  padding-bottom: 2px;
+  transition: all 0.5s ease-in;
+}
+
+.logout-button {
+  background: transparent;
+  border: none
 }

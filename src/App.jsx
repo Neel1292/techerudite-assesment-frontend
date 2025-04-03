@@ -14,13 +14,13 @@ function App() {
 
   const Protected = ({ children }) => {
     const user = localStorage.getItem("user");
-    const parsedUser = JSON.parse(user);
+    const parsedUser = user ? JSON.parse(user) : null;
 
     if (!parsedUser) {
       return <Navigate to="/login/customer" />;
-    } else {
-      return <Navigate to="/" />;
     }
+
+    return children;
   }
 
   return (
