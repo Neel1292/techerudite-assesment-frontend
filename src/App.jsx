@@ -1,34 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom'
 import './App.css'
+import CustomerRegister from "./pages/CustomerRegister";
+import CustomerLogin from "./pages/CustomerLogin";
+import AdminRegister from "./pages/AdminRegister";
+import AdminLogin from "./pages/AdminLogin";
+import VerifyEmail from "./pages/VerifyEmail";
+import Dashboard from "./pages/Dashboard";
+import Header from './components/Header';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const Protected = ({ children }) => {
+    const user = localStorage.getItem("user");
+    const parsedUser = user ? JSON.parse(user) : null;
+
+    if (!parsedUser) {
+      return <Navigate to="/login/customer" />;
+    }
+
+    return children;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <Header />
+        <ToastContainer />
+        <Routes>
+          <Route path="/" element={<Protected><Dashboard /></Protected>} />
+          <Route path="/register/customer" element={<CustomerRegister />} />
+          <Route path="/register/admin" element={<AdminRegister />} />
+          <Route path="/login/admin" element={<AdminLogin />} />
+          <Route path="/login/customer" element={<CustomerLogin />} />
+          <Route path="/verify" element={<VerifyEmail />} />
+        </Routes>
+  </Router>
   )
 }
 
