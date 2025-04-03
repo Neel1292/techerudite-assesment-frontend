@@ -8,20 +8,32 @@ import AdminLogin from "./pages/AdminLogin";
 import VerifyEmail from "./pages/VerifyEmail";
 import Dashboard from "./pages/Dashboard";
 import Header from './components/Header';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
+
+  const Protected = ({ children }) => {
+    const user = localStorage.getItem("user");
+    const parsedUser = JSON.parse(user);
+
+    if (!parsedUser) {
+      return <Navigate to="/login/customer" />;
+    } else {
+      return <Navigate to="/" />;
+    }
+  }
 
   return (
     <Router>
       <Header />
+        <ToastContainer />
         <Routes>
-          <Route path="/" element={<Navigate to="/register/customer" />} />
+          <Route path="/" element={<Protected><Dashboard /></Protected>} />
           <Route path="/register/customer" element={<CustomerRegister />} />
           <Route path="/register/admin" element={<AdminRegister />} />
           <Route path="/login/admin" element={<AdminLogin />} />
           <Route path="/login/customer" element={<CustomerLogin />} />
           <Route path="/verify" element={<VerifyEmail />} />
-          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
   </Router>
   )
